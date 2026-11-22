@@ -8,7 +8,7 @@ Uma change OpenSpec por vez. Cada uma só começa depois que a anterior é aprov
 |---|---|---|---|---|---|
 | 0 | `setup-dev-harness` | Base | Projeto Next, harness de testes, lint, CI, hooks do Claude Code, setup, portão de qualidade, Mantis inicial, ponytail, SkillSpector | unitários, componentes, arquitetura, lint, tipos, código morto, integração, e2e (3 navegadores), smoke, build, gitleaks, audit, CodeQL, OpenSpec, Mantis, SkillSpector, ponytail-review | **em planejamento** |
 | 1 | `add-dominio-e-portas` | Base | Entidades, regras, casos de uso, portas, `Resultado`, fakes e adaptador em memória com os dados de exemplo | cobertura, propriedades, mutação, idempotência | a fazer |
-| 2 | `add-design-system` | Front | Tokens (azul bebê, tipografia), componentes base e utilitários de animação | acessibilidade (axe), regressão visual, movimento reduzido, teclado, responsividade, animação | a fazer |
+| 2 | `add-design-system` | Front | Tokens (azul bebê, tipografia), componentes base e utilitários de animação; instalação do impeccable e ADR de exceções de identidade (ADR-0015) | qualidade e revisão de design (impeccable), acessibilidade (axe), regressão visual, movimento reduzido, teclado, responsividade, animação | a fazer |
 | 3 | `add-public-home` | Front | Hero, índice filtrável e vitrines (celular, monitor, PDF) | hidratação, Lighthouse, bundle, SEO, links, cabeçalhos de segurança; checklist manual (exploratório, leitor de tela, zoom) | a fazer |
 | 4 | `add-public-sections` | Front | Pesquisa, eventos (`git log`), sobre (stack/`package.json`), contato, easter eggs | as mesmas, nas seções novas | a fazer |
 | 5 | `add-project-pages` | Front | Página de cada projeto e 404 | as mesmas, nas páginas novas | a fazer |

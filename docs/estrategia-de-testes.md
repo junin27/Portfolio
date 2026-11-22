@@ -49,6 +49,8 @@ Situação: **ativo** desde a change indicada. Antes disso, o relatório mostra 
 | Migração e banco | Testcontainers | migração aplica do zero e sobre dados; constraints funcionam | 7 |
 | Idempotência (seed, escrita repetida) | Vitest integração | 100% passando | 1 |
 | Acessibilidade automática | axe-core no Playwright | zero violações | 2 |
+| Qualidade de design | `impeccable detect --sarif` (ADR-0015), com as exceções de identidade do ADR da change 2 | zero achados confirmados pendentes | 2 |
+| Revisão de design | `/impeccable critique` e `/impeccable audit` nas telas da change | nenhum problema confirmado pendente | 2 |
 | Regressão visual | Playwright `toHaveScreenshot` (em contêiner Docker, para não variar por sistema) | zero diferenças fora da tolerância | 2 |
 | Movimento reduzido | Playwright `emulateMedia` | nenhuma animação ativa | 2 |
 | Teclado e foco | Playwright | todos os controles alcançáveis, foco visível | 2 |
