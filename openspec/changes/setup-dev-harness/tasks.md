@@ -31,9 +31,9 @@
 
 ## 6. Setup e CI
 
-- [ ] 6.1 Escrever `scripts/setup.ps1` e `scripts/setup.sh` idempotentes; verificar com [DONO] rodando duas vezes seguidas sem erro e sem duplicar o `.env`
+- [x] 6.1 Escrever `scripts/setup.ps1` e `scripts/setup.sh` idempotentes; verificar com [DONO] rodando duas vezes seguidas sem erro e sem duplicar o `.env`
 - [ ] 6.2 Escrever `.github/workflows/ci.yml` (pnpm com cache; jobs de qualidade, integração, e2e e build); verificação adiada até o dono criar o repositório no GitHub: [DONO] push e todos os jobs verdes
-- [ ] 6.3 Atualizar o README (como rodar, como testar, estrutura) e escrever o ADR-0009 (harness, pnpm, hook de testes autorizado, versões fixadas); verificar seguindo o README num clone limpo
+- [x] 6.3 Atualizar o README (como rodar, como testar, estrutura) e escrever o ADR-0009 (harness, pnpm, hook de testes autorizado, versões fixadas); verificar seguindo o README num clone limpo
 
 ## 7. Portão de qualidade
 

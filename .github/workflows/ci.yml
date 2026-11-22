@@ -1,0 +1,86 @@
+# Mesmas verificações do portão de qualidade (docs/estrategia-de-testes.md), em todo push e PR.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualidade:
+    name: Lint, tipos, arquitetura e unitários
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Instalar dependências
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+        env:
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      - run: pnpm check
+      - run: pnpm codigo-morto
+      - run: pnpm specs
+      - name: Dependências vulneráveis (altas e críticas)
+        run: pnpm audit --audit-level high
+
+  integracao:
+    name: Integração (Postgres via Testcontainers)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Instalar dependências
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+        env:
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      - run: pnpm test:integracao
+
+  e2e:
+    name: Ponta a ponta (Chromium, Firefox, WebKit) e build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Instalar dependências e navegadores
+        run: bash scripts/setup.sh
+        env:
+          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: relatorio-playwright
+          path: reports/playwright
+          retention-days: 7
+
+  segredos:
+    name: Segredos vazados (gitleaks)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
