@@ -65,7 +65,7 @@ jobs:
         run: bash scripts/setup.sh
         env:
           COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
-      - run: pnpm test:e2e
+      - run: pnpm test:e2e:todos
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

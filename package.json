@@ -20,7 +20,9 @@
     "specs": "openspec validate --all --strict",
     "test": "vitest run --project unit --project componentes",
     "test:integracao": "vitest run --project integracao",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:todos": "playwright test",
+    "segredos": "tsx scripts/segredos.ts",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm arquitetura && pnpm test",
     "portao": "tsx scripts/portao/cli.ts"
   },

@@ -38,7 +38,10 @@ O setup confere Node e Docker, instala as dependências com o lockfile congelado
 | `pnpm dev` | site em http://localhost:3000 |
 | `pnpm check` | lint, formatação, tipos, arquitetura e testes unitários/componentes |
 | `pnpm test:integracao` | testes com Postgres real (Testcontainers; Docker ligado) |
-| `pnpm test:e2e` | Playwright; `TODOS_OS_NAVEGADORES=1` roda Chromium, Firefox e WebKit |
+| `pnpm test:e2e` | Playwright só no Chromium (dia a dia) |
+| `pnpm test:e2e:todos` | Playwright no Chromium, Firefox e WebKit (CI e portão) |
+| `pnpm segredos` | gitleaks em container Docker, no histórico do git |
+| `pnpm portao --change <nome> --numero <n>` | portão de qualidade completo; grava `verificacao.md` na change |
 | `pnpm codigo-morto` | knip |
 | `pnpm specs` | valida as specs do OpenSpec |
 | `docker compose up -d` | Postgres local na porta 55432 (ajustável em `POSTGRES_PORTA_HOST`) |
