@@ -1,0 +1,10 @@
+.next/
+out/
+coverage/
+reports/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+.claude/
+# Documentação e specs são escritas à mão; o Prettier não reformata Markdown.
+**/*.md

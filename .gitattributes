@@ -1,0 +1,4 @@
+# LF em todos os arquivos de texto, igual ao .editorconfig, mesmo em clone no Windows.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf

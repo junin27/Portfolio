@@ -1,0 +1,9 @@
+# Scripts de instalação de dependências só rodam se liberados aqui (segurança da cadeia de suprimentos).
+allowBuilds:
+  # Binário nativo usado pelo Vitest, Vite e tsx.
+  esbuild: true
+  # Vêm do Testcontainers (dockerode) e só servem para Docker remoto via SSH, que o projeto não usa.
+  cpu-features: false
+  ssh2: false
+  # Script de pós-instalação só confere versão; desnecessário.
+  protobufjs: false

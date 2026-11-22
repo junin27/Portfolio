@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* Os tokens de design chegam na change add-design-system; aqui fica só a base. */
+@theme {
+  --color-papel: #f5f8fb;
+  --color-tinta: #0f1b2a;
+}
+
+body {
+  background: var(--color-papel);
+  color: var(--color-tinta);
+}

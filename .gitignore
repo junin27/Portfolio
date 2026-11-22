@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+next-env.d.ts
+
+# tests and reports
+coverage/
+playwright-report/
+test-results/
+blob-report/
+reports/
+
+# environment (commit only .env.example)
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store
+Thumbs.db
+*.log
+*.tsbuildinfo

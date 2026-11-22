@@ -1,0 +1,25 @@
+# Postgres local para desenvolvimento (ADR-0003). Os testes de integração não usam este
+# banco: cada teste sobe o seu próprio container com o Testcontainers.
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      # Porta do host configurável e fora das usuais (5432, 5433), que costumam estar ocupadas
+      # por Postgres instalados direto no Windows.
+      - "127.0.0.1:${POSTGRES_PORTA_HOST:-55432}:5432"
+    volumes:
+      - portfolio-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  portfolio-postgres:

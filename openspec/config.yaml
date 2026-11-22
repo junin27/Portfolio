@@ -1,0 +1,33 @@
+schema: spec-driven
+
+context: |
+  Language: pt-BR
+  All artifacts must be written in pt-BR.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  Projeto: portfólio pessoal de engenheiro de software e pesquisador, com site público e painel administrativo próprio.
+  Regras de desenvolvimento: ../CLAUDE.md (XP, TDD, execução controlada) e CLAUDE.md deste projeto.
+  Arquitetura em docs/arquitetura.md; decisões em docs/adr/ (Next.js 16 + Vercel, Postgres no Supabase com Prisma 7,
+  painel próprio, arquivos pesados no Google Drive, código em pt-BR, OpenSpec).
+  Next.js 16 tem APIs novas: consultar node_modules/next/dist/docs antes de especificar comportamento do framework.
+  Público acessa muito pelo celular: desempenho e prefers-reduced-motion são obrigatórios.
+
+rules:
+  proposal:
+    - Sempre declarar o que está fora de escopo
+    - Listar as decisões que dependem do dono do portfólio
+  design:
+    - Registrar decisões estruturais também como ADR em docs/adr/
+  tasks:
+    - Tarefas pequenas (no máximo ~2 horas cada) e verificáveis
+    - Teste escrito antes do código de produção em cada tarefa de implementação
+    - Marcar com [DONO] as tarefas que exigem o dono rodar comandos (install, build, migrations, git)
+    - Incluir verificação no navegador quando houver mudança visível
+    - Listar quais verificações da matriz de docs/estrategia-de-testes.md passam a valer nesta change e criar os testes delas
+    - Terminar com o grupo "Portão desta change" - rodar pnpm portao e o ciclo de correção até verificacao.md 100% verde, e a revisão do dono
+
+operations:
+  archive:
+    guidance:
+      - Só arquivar com verificacao.md 100% verde, gerado depois do último commit, e checklist manual marcado pelo dono
+      - Nunca baixar limite, pular ou enfraquecer teste para o portão passar
