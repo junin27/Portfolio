@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "arquitetura": "depcruise src tests --config .dependency-cruiser.cjs",
+    "arquitetura": "depcruise src tests scripts --config .dependency-cruiser.cjs",
     "codigo-morto": "knip",
     "specs": "openspec validate --all --strict",
     "test": "vitest run --project unit --project componentes",

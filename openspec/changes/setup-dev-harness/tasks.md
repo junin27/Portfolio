@@ -25,9 +25,9 @@
 
 ## 5. Harness do agente
 
-- [ ] 5.1 Escrever `.claude/settings.json` com `deny` para comandos destrutivos de git e remoção recursiva, `ask` para o resto e o hook de Prettier pós-edição; verificar pedindo ao Claude Code um `git restore` de teste e vendo o bloqueio
-- [ ] 5.2 Escrever primeiro o teste do `scripts/hooks/testar-relacionados.mjs` (arquivo fora de `src`/`tests` é ignorado, resumo de sucesso, resumo de falha com a primeira mensagem, tempo limite estourado sai sem erro) e depois o script; registrar o hook `PostToolUse` não bloqueante no `.claude/settings.json`; verificar editando um arquivo com teste e vendo o resumo devolvido ao agente
-- [ ] 5.3 [DONO] Rodar `pnpm dlx @fission-ai/openspec@1.16.1 init --tools claude --language pt-BR` para instalar os comandos `/opsx:*`; verificar que o `openspec/config.yaml` deste projeto foi preservado
+- [x] 5.1 Escrever `.claude/settings.json` com `deny` para comandos destrutivos de git e remoção recursiva, `ask` para o resto e o hook de Prettier pós-edição; verificar pedindo ao Claude Code um `git restore` de teste e vendo o bloqueio
+- [x] 5.2 Escrever primeiro o teste do `scripts/hooks/testar-relacionados.mjs` (arquivo fora de `src`/`tests` é ignorado, resumo de sucesso, resumo de falha com a primeira mensagem, tempo limite estourado sai sem erro) e depois o script; registrar o hook `PostToolUse` não bloqueante no `.claude/settings.json`; verificar editando um arquivo com teste e vendo o resumo devolvido ao agente
+- [x] 5.3 [DONO] Rodar `pnpm dlx @fission-ai/openspec@1.16.1 init --tools claude --language pt-BR` para instalar os comandos `/opsx:*`; verificar que o `openspec/config.yaml` deste projeto foi preservado
 
 ## 6. Setup e CI
 

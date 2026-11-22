@@ -19,6 +19,7 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - Nunca baixar limite, pular, enfraquecer ou apagar teste para passar. Teste instável é falha.
 - Ponytail (ADR-0010): modo `lite`; `/ponytail-review` é o bloco 4 do portão. Em conflito vale este arquivo e o `../CLAUDE.md` (TDD completo; sem comentários `shortcut:`, usar `TODO(issue #N)`). Não usar `ultra`. Não sugerir a statusline dele.
 - Skill ou plugin de terceiros (instalar ou atualizar): SkillSpector com nota ≤ 20 + leitura do código antes de recomendar a instalação (ADR-0012). Ferramenta nova no harness só com problema concreto que ela resolva.
+- impeccable (ADR-0015, a partir da change 2): detector no portão + `critique`/`audit` por change de front. Telemetria desligada. Modo live e "Apply" proibidos. Outros comandos só a pedido do dono.
 - `mantis-patch` não é usado; estado do Mantis em `../.mantis-estado/`, nunca no repositório.
 
 ## Exceção de idioma (ADR-0006)
@@ -49,3 +50,6 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - pnpm bloqueia scripts de instalação: liberar um a um em `pnpm-workspace.yaml` (`allowBuilds`); só `esbuild` está liberado.
 - Máquina do dono tem PostgreSQL 17 na 5432 e 13 na 5433 instalados no Windows: Docker usa a 55432.
 - Shell Bash do agente não vê o `docker` no PATH; usar PowerShell recarregando o PATH da máquina.
+- Hooks e permissões de `.claude/settings.json` só carregam em sessão aberta **dentro de `portfolio-v2/`**, não na pasta `Portfólio/`.
+- Para testar hook à mão no Git Bash, mandar caminhos no formato Windows (`cygpath -w`); `$PWD` gera `/c/...`, que o Node não resolve.
+- `vitest related` no projeto `unit` roda a suíte unitária inteira, não só o teste ligado ao arquivo (rápido hoje; rever se a suíte crescer).

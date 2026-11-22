@@ -1,0 +1,74 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm test*)",
+      "Bash(pnpm check)",
+      "Bash(pnpm lint*)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm format*)",
+      "Bash(pnpm arquitetura)",
+      "Bash(pnpm codigo-morto)",
+      "Bash(pnpm specs)",
+      "Bash(pnpm build)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm portao*)",
+      "Bash(pnpm exec openspec *)",
+      "Bash(pnpm exec playwright test*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(docker compose ps*)",
+      "Bash(docker compose up*)",
+      "Bash(docker compose down)"
+    ],
+    "ask": [
+      "Bash(pnpm add *)",
+      "Bash(pnpm remove *)",
+      "Bash(pnpm install*)",
+      "Bash(pnpm approve-builds*)",
+      "Bash(npm install*)",
+      "Bash(npx *)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git restore*)",
+      "Bash(git reset*)",
+      "Bash(git checkout*)",
+      "Bash(git clean*)",
+      "Bash(git revert*)",
+      "Bash(git rebase*)",
+      "Bash(docker compose down -v*)",
+      "Bash(docker volume rm*)",
+      "Bash(pnpm exec prisma migrate deploy*)",
+      "Bash(vercel *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Edit(./.env)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/node_modules/tsx/dist/cli.mjs\" \"$CLAUDE_PROJECT_DIR/scripts/hooks/formatar-arquivo.ts\"",
+            "timeout": 20,
+            "statusMessage": "Formatando o arquivo editado"
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/node_modules/tsx/dist/cli.mjs\" \"$CLAUDE_PROJECT_DIR/scripts/hooks/testar-relacionados.ts\"",
+            "timeout": 75,
+            "statusMessage": "Rodando os testes relacionados"
+          }
+        ]
+      }
+    ]
+  }
+}
