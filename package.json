@@ -23,6 +23,7 @@
     "test:e2e": "playwright test --project=chromium",
     "test:e2e:todos": "playwright test",
     "segredos": "tsx scripts/segredos.ts",
+    "skillspector": "tsx scripts/skillspector.ts",
     "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm arquitetura && pnpm test",
     "portao": "tsx scripts/portao/cli.ts"
   },
