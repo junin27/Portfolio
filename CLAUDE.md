@@ -6,7 +6,8 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - Só testes podem ser rodados, e só depois de pedir permissão. Todo o resto (install, build, migrations, git, scripts) vai como comando para o dono rodar.
 - Exceção autorizada pelo dono (2026-11-21): o hook `PostToolUse` roda `vitest related` no arquivo editado sem pedir permissão. Testes rodados à mão continuam pedindo.
 - Autorização permanente do dono (2026-11-22), sem pedir nem confirmar a cada execução: testes (`pnpm test*`, `pnpm check`), `pnpm portao`, scripts de desenvolvimento do `package.json` (lint, typecheck, format, build, dev), CLI do OpenSpec, etapas do Mantis, comandos do ponytail e as ferramentas do portão (Playwright, Lighthouse, gitleaks, knip, dependency-cruiser, Stryker, ZAP).
-- Pedir autorização antes, a cada vez (comandos irreversíveis ou que saem da máquina): instalar/remover dependências, `git commit`, `git push`, migrações em banco real, deploy e qualquer comando de git que restaure ou descarte algo (`restore`, `reset`, `checkout --`, `clean`, `revert`). Estes últimos só com autorização explícita para aquele caso.
+- Pedir autorização antes, a cada vez (comandos irreversíveis ou que saem da máquina): instalar/remover dependências, `git commit`, `git push`, migrações em banco real, deploy.
+- `git restore`, `reset`, `checkout`, `clean` e `revert` estão em `deny` (2026-11-23): só o dono roda, à mão. Motivo: no modo de permissão `auto` as regras `ask` não pediram confirmação.
 - Todo o resto roda sem pedir.
 - Gerenciador: pnpm (Corepack). Verificação única: `pnpm check` (lint + tipos + unitários). Integração: `pnpm test:integracao` (Docker). E2E: `pnpm test:e2e`.
 
@@ -51,5 +52,7 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - Máquina do dono tem PostgreSQL 17 na 5432 e 13 na 5433 instalados no Windows: Docker usa a 55432.
 - Shell Bash do agente não vê o `docker` no PATH; usar PowerShell recarregando o PATH da máquina.
 - Hooks e permissões de `.claude/settings.json` só carregam em sessão aberta **dentro de `portfolio-v2/`**, não na pasta `Portfólio/`.
+- Sessão em worktree do app desktop: settings, hooks e `CLAUDE_PROJECT_DIR` vêm do checkout **principal**. Os hooks acham o worktree pelo git (`raizDoCheckoutDe`), mas mudança em `settings.json` ou em `scripts/hooks/` só vale depois de chegar ao `master` do checkout principal.
+- Worktree novo não tem `node_modules`: rodar `pnpm install --frozen-lockfile` nele antes de qualquer teste.
 - Para testar hook à mão no Git Bash, mandar caminhos no formato Windows (`cygpath -w`); `$PWD` gera `/c/...`, que o Node não resolve.
 - `vitest related` no projeto `unit` roda a suíte unitária inteira, não só o teste ligado ao arquivo (rápido hoje; rever se a suíte crescer).
