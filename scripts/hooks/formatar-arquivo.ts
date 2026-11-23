@@ -1,9 +1,9 @@
 // Hook PostToolUse (Edit|Write): formata com o Prettier só o arquivo que acabou de ser editado.
 // Nunca bloqueia a edição: se o Prettier falhar, o erro aparece no próximo pnpm check.
 import { spawnSync } from "node:child_process";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { caminhoRelativoAoProjeto, lerEntradaPadrao, raizDoProjetoAtual } from "./caminhos-do-projeto";
+import { caminhoRelativoAoProjeto, lerEntradaPadrao, raizDoCheckoutDe } from "./caminhos-do-projeto";
 import { lerCaminhoEditado } from "./entrada-do-hook";
 
 const EXTENSOES_FORMATADAS = [".ts", ".tsx", ".js", ".mjs", ".cjs", ".json", ".css", ".yml", ".yaml"];
@@ -29,9 +29,12 @@ export function deveFormatar(caminho: string, raizDoProjeto: string): boolean {
 }
 
 async function executarHook(): Promise<void> {
-  const raiz = raizDoProjetoAtual();
   const caminho = lerCaminhoEditado(await lerEntradaPadrao());
-  if (caminho === null || !deveFormatar(caminho, raiz)) {
+  if (caminho === null) {
+    return;
+  }
+  const raiz = raizDoCheckoutDe(dirname(caminho));
+  if (!deveFormatar(caminho, raiz)) {
     return;
   }
   const prettier = join(raiz, "node_modules", "prettier", "bin", "prettier.cjs");

@@ -2,9 +2,10 @@
 // editado e devolve um resumo ao agente. Não bloqueia: no TDD o vermelho logo após escrever o
 // teste é esperado. Autorizado pelo dono a rodar sem pedir permissão (CLAUDE.md do projeto).
 import { spawnSync } from "node:child_process";
-import { join } from "node:path";
+import { existsSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { caminhoRelativoAoProjeto, lerEntradaPadrao, raizDoProjetoAtual } from "./caminhos-do-projeto";
+import { caminhoRelativoAoProjeto, lerEntradaPadrao, raizDoCheckoutDe } from "./caminhos-do-projeto";
 import { lerCaminhoEditado } from "./entrada-do-hook";
 
 const PASTAS_TESTADAS = ["src/", "tests/", "scripts/"];
@@ -53,7 +54,8 @@ export function resumirResultado({ saida, codigoDeSaida, estourouTempo }: Result
   if (estourouTempo) {
     return `Testes relacionados: tempo limite de ${TEMPO_LIMITE_SEGUNDOS} s estourado; rode pnpm test para ver o resultado.`;
   }
-  if (saida.includes("No test files found")) {
+  // "No test files found" até o Vitest 4; "No affected test files found" no `vitest related` do 5.
+  if (saida.includes("No test files found") || saida.includes("No affected test files found")) {
     return "Testes relacionados: nenhum teste cobre este arquivo ainda.";
   }
   const contagem = linhaQueContem(saida, "Tests ") ?? "sem contagem";
@@ -78,13 +80,19 @@ function rodarTestesRelacionados(raiz: string, relativo: string): ResultadoDosTe
 }
 
 async function executarHook(): Promise<void> {
-  const raiz = raizDoProjetoAtual();
   const caminho = lerCaminhoEditado(await lerEntradaPadrao());
-  if (caminho === null || !deveTestar(caminho, raiz)) {
+  if (caminho === null) {
+    return;
+  }
+  const raiz = raizDoCheckoutDe(dirname(caminho));
+  if (!deveTestar(caminho, raiz)) {
     return;
   }
   const relativo = caminhoRelativoAoProjeto(caminho, raiz) ?? caminho;
-  const resumo = resumirResultado(rodarTestesRelacionados(raiz, relativo));
+  // Worktree novo não herda o node_modules: avisar em vez de falhar em silêncio.
+  const resumo = existsSync(join(raiz, "node_modules", "vitest"))
+    ? resumirResultado(rodarTestesRelacionados(raiz, relativo))
+    : `Testes relacionados: não rodaram, falta node_modules em ${raiz}; rode pnpm install nesse checkout.`;
   const saidaDoHook = { hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: resumo } };
   process.stdout.write(JSON.stringify(saidaDoHook));
 }

@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { lerResumoDoRelatorio } from "../portao/relatorio";
-import { lerEntradaPadrao, raizDoProjetoAtual } from "./caminhos-do-projeto";
+import { lerEntradaPadrao, raizDoCheckoutDe, raizDoProjetoAtual } from "./caminhos-do-projeto";
 
 const COMANDO_DE_ARCHIVE = /\bopenspec\s+archive(?:\s+(?<change>[a-z0-9][a-z0-9-]*))?/;
 
@@ -91,13 +91,17 @@ function alteracoesForaDaChange(raiz: string, change: string): string[] {
 }
 
 async function executarHook(): Promise<void> {
-  const entrada = JSON.parse(await lerEntradaPadrao()) as { tool_input?: { command?: unknown } };
+  const entrada = JSON.parse(await lerEntradaPadrao()) as {
+    cwd?: unknown;
+    tool_input?: { command?: unknown };
+  };
   const comando = typeof entrada.tool_input?.command === "string" ? entrada.tool_input.command : "";
   const analise = extrairChangeDoArchive(comando);
   if (!analise.ehArchive) {
     return;
   }
-  const raiz = raizDoProjetoAtual();
+  // O cwd da sessão aponta para o worktree; CLAUDE_PROJECT_DIR, para o checkout principal.
+  const raiz = raizDoCheckoutDe(typeof entrada.cwd === "string" ? entrada.cwd : raizDoProjetoAtual());
   const change = analise.change;
   const decisao = decidirArchive({
     change,

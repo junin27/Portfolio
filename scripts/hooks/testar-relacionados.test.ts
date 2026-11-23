@@ -54,6 +54,14 @@ describe("resumirResultado", () => {
     );
   });
 
+  it("avisa quando o vitest related não acha teste afetado (mensagem do Vitest 5)", () => {
+    const saida = "No affected test files found, exiting with code 0\n";
+
+    expect(resumirResultado({ saida, codigoDeSaida: 0, estourouTempo: false })).toBe(
+      "Testes relacionados: nenhum teste cobre este arquivo ainda.",
+    );
+  });
+
   it("avisa sem falhar quando o tempo limite estoura", () => {
     expect(resumirResultado({ saida: "", codigoDeSaida: null, estourouTempo: true })).toBe(
       "Testes relacionados: tempo limite de 60 s estourado; rode pnpm test para ver o resultado.",
