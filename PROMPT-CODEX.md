@@ -35,6 +35,10 @@ O rascunho passou por algumas rodadas e **eu ainda não gostei do resultado: ach
 
 Mantenha como âncoras da identidade: azul bebê, a minha foto (`public/foto.png`, fundo escuro com brilho azul), os dados reais acima e o tema de jogo/RPG como decoração.
 
+## Você tem liberdade total no "como"
+
+Quero testar a sua capacidade e ver se você encontra algo legal. **Fique livre para fazer o trabalho do jeito que achar melhor** e para buscar o que quiser: bibliotecas, ferramentas, pesquisa na web, referências, skills, plugins, conectores ou qualquer outro recurso que você tenha. Nada disso é obrigatório; use só se achar que vale a pena. As regras abaixo dizem **o que** o resultado precisa garantir, não **como** chegar lá.
+
 ## Regras obrigatórias
 
 1. **Não pode travar em nenhum PC ou celular.** Se travar no aparelho de um recrutador, pega mal.
@@ -47,8 +51,8 @@ Mantenha como âncoras da identidade: azul bebê, a minha foto (`public/foto.png
 2. **Bom no celular** (a maior parte das visitas): toque confortável, sem rolagem horizontal, textos legíveis, nada cortado.
 3. **Acessível:** contraste legível, navegação por teclado com foco visível, HTML semântico, `alt` nas imagens, conteúdo decorativo com `aria-hidden`.
 4. **Texto em português do Brasil, em linguagem de cliente**, como explicado acima.
-5. **Dependências:** prefira o que já está instalado (GSAP 3.15 com todos os plugins gratuitos, `@gsap/react`, Tailwind 4, `next/font`). Se for adicionar algo (por exemplo Lenis ou uma lib 3D), justifique o motivo, o peso e o impacto no celular antes.
-6. **Sem imagens da internet** (hotlink). Use SVG, CSS, a minha foto ou arquivos novos em `public/`.
+5. **Dependências:** pode adicionar o que quiser (3D, scroll suave, shaders, outra lib de animação etc.). O projeto já tem GSAP 3.15 com todos os plugins gratuitos, `@gsap/react`, Tailwind 4 e `next/font`, caso sirvam. Na entrega, explique o que adicionou, por quê e quanto pesa no celular; a regra 1 continua valendo.
+6. **Imagens e outros arquivos** ficam dentro do projeto (`public/`), nunca carregados de outro site (hotlink). Se pegar algo de fora, use só material com licença livre e anote a fonte e a licença na entrega.
 7. **Não apague nem altere** a pasta `_backup-antes-new-game-plus-2026-11-23/`.
 8. **Git:** não rode `git reset`, `git checkout`, `git restore`, `git clean`, `git push` nem nada que descarte histórico. O ponto de restauração é a tag `antes-do-codex`.
 9. Não coloque segredos, chaves ou e-mail pessoal no código. O e-mail de contato fica como está (`seu@email.com`) até eu definir.
@@ -68,7 +72,7 @@ Mantenha como âncoras da identidade: azul bebê, a minha foto (`public/foto.png
 
 1. O site rodando com o novo visual.
 2. Um resumo do conceito visual e de movimento que você escolheu (uma frase de conceito e os momentos principais).
-3. A lista de arquivos alterados e criados.
+3. A lista de arquivos alterados e criados, e o que você usou para chegar lá (bibliotecas, ferramentas, pesquisas, skills, plugins ou conectores), com o porquê.
 4. Um catálogo dos efeitos: efeito, onde aparece e como foi feito.
 5. Como você verificou o desempenho (o que mediu e em que condições) e o que não conseguiu verificar.
 6. O que ficou de fora e por quê.
