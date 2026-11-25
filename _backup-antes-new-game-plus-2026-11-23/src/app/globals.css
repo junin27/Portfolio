@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* Identidade "Índice": papel frio, tinta azul-marinho e azul bebê como luz.
+   Elegante por padrão; os detalhes nerds aparecem em fonte mono, como comentários de código. */
+@theme {
+  --color-paper: #f5f8fb;
+  --color-card: #ffffff;
+  --color-ink: #0f1b2a;
+  --color-mute: #5b6979;
+  --color-line: #d9e3ec;
+  --color-baby: #a9d6f5;
+  --color-baby-soft: #e4f2fc;
+  --color-blue: #2462a6;
+  --color-night: #0c1622;
+
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter-tight), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
+
+  --ease-cine: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-baby);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
+/* Comentário de código usado como rótulo de seção: "// 02 — em ação" */
+.code-comment {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--color-blue);
+}
+
+/* Aura azul bebê do hero: só transform anima, então não pesa */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-8%, 6%, 0) scale(1.12); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50% { transform: translate3d(10%, -8%, 0) scale(0.92); }
+}
+.aura-a { animation: drift-a 16s ease-in-out infinite; }
+.aura-b { animation: drift-b 20s ease-in-out infinite; }
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: blink 1s steps(2) infinite;
+}
+
+/* Faixa de texto infinita */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Monitor: a página rola sozinha, pausa no hover */
+@keyframes autoscroll {
+  0%, 10% { transform: translateY(0); }
+  90%, 100% { transform: translateY(var(--scroll-to, -55%)); }
+}
+.autoscroll { animation: autoscroll 14s ease-in-out infinite alternate; }
+.monitor:hover .autoscroll { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

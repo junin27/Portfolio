@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
+/* Identidade "Índice": papel frio, tinta azul-marinho e azul bebê como luz.
+   Elegante por padrão; os detalhes nerds aparecem em fonte mono, como comentários de código. */
+@theme {
+  --color-paper: #f5f8fb;
+  --color-card: #ffffff;
+  --color-ink: #0f1b2a;
+  --color-mute: #5b6979;
+  --color-line: #d9e3ec;
+  --color-baby: #a9d6f5;
+  --color-baby-soft: #e4f2fc;
+  --color-blue: #2462a6;
+  --color-night: #0c1622;
+
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter-tight), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Consolas, monospace;
+  --font-pixel: var(--font-silkscreen), ui-monospace, monospace;
+  --color-xp: #f2c14e;
+  --color-xp-soft: #fff4d6;
+
+  --ease-cine: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-baby);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
+/* Rótulo de seção em fonte pixel, como a fase de um jogo: "FASE 3 · EM AÇÃO" */
+.code-comment {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--color-blue);
+}
+
+/* Aura azul bebê do hero: só transform anima, então não pesa */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-8%, 6%, 0) scale(1.12); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50% { transform: translate3d(10%, -8%, 0) scale(0.92); }
+}
+.aura-a { animation: drift-a 16s ease-in-out infinite; }
+.aura-b { animation: drift-b 20s ease-in-out infinite; }
+
+/* BRILHOS SEM FILTER: gradientes radiais já "desfocados". Animar blur trava celulares fracos. */
+.brilho-baby { background: radial-gradient(circle at 50% 50%, rgba(169, 214, 245, 0.75) 0%, rgba(169, 214, 245, 0.35) 35%, transparent 68%); }
+.brilho-claro { background: radial-gradient(circle at 50% 50%, rgba(207, 227, 255, 0.85) 0%, transparent 65%); }
+.brilho-noite-forte { background: radial-gradient(circle at 50% 50%, rgba(36, 98, 166, 0.55) 0%, rgba(36, 98, 166, 0.2) 40%, transparent 68%); }
+.brilho-noite {
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 40%, rgba(36, 98, 166, 0.45) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 10%, rgba(90, 169, 255, 0.18) 0%, transparent 70%);
+}
+
+/* NEON: brilho estático com text-shadow/box-shadow (não anima o brilho, só a opacidade) */
+.text-neon {
+  color: #dff1ff;
+  text-shadow: 0 0 4px #a9d6f5, 0 0 12px #5aa9ff, 0 0 28px #2462a6;
+}
+.neon-borda {
+  border-color: #a9d6f5;
+  box-shadow: 0 0 0 1px rgba(169, 214, 245, 0.4), 0 0 18px rgba(90, 169, 255, 0.45), inset 0 0 18px rgba(90, 169, 255, 0.15);
+}
+.neon-barra {
+  background: linear-gradient(90deg, #2462a6, #5aa9ff 60%, #dff1ff);
+  box-shadow: 0 0 10px rgba(90, 169, 255, 0.7);
+}
+
+/* FUMAÇA: manchas de gradiente que derivam devagar (só transform) */
+.fumaca {
+  background: radial-gradient(ellipse at 50% 60%, rgba(169, 214, 245, 0.28) 0%, rgba(90, 169, 255, 0.1) 40%, transparent 70%);
+  will-change: transform;
+}
+@keyframes deriva-a { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(8%, -6%, 0) scale(1.15); } }
+@keyframes deriva-b { 0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); } 50% { transform: translate3d(-10%, -10%, 0) scale(0.95); } }
+@keyframes deriva-c { 0%, 100% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-6%, -4%, 0) scale(1.2); } }
+.fumaca-a { animation: deriva-a 14s ease-in-out infinite; }
+.fumaca-b { animation: deriva-b 18s ease-in-out infinite; }
+.fumaca-c { animation: deriva-c 12s ease-in-out infinite; }
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: blink 1s steps(2) infinite;
+}
+
+/* Faixa de texto infinita */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* Monitor: a página rola sozinha, pausa no hover */
+@keyframes autoscroll {
+  0%, 10% { transform: translateY(0); }
+  90%, 100% { transform: translateY(var(--scroll-to, -55%)); }
+}
+.autoscroll { animation: autoscroll 14s ease-in-out infinite alternate; }
+.monitor:hover .autoscroll { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

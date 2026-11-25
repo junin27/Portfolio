@@ -1,0 +1,37 @@
+schema: spec-driven
+
+context: |
+  Language: pt-BR
+  All artifacts must be written in pt-BR.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  Projeto: portfólio pessoal de um engenheiro de software e pesquisador (dev, pesquisa, eventos, trabalho).
+  Objetivo: conseguir emprego melhor e clientes freelance.
+  Stack: Next.js 16 (App Router, cacheComponents e partialPrefetching ligados), React 19, TypeScript,
+  Tailwind 4, GSAP. Deploy na Vercel. Esta versão do Next tem APIs novas: consultar node_modules/next/dist/docs.
+  Visual: estilo "Índice" (claro, serifado, azul bebê) com referências nerds nos detalhes. Não mudar a identidade
+  visual sem pedido explícito.
+  Decisões do dono: painel administrativo próprio (sem CMS pronto), banco Postgres, arquivos pesados
+  (PDFs, vídeos) no Google Drive. Trabalho incremental: uma change por vez, implementada só após aprovação.
+  Público lê o site no celular com frequência: desempenho e prefers-reduced-motion são obrigatórios.
+
+rules:
+  proposal:
+    - Sempre declarar o que está fora de escopo
+    - Listar as decisões que dependem do dono do portfólio
+  tasks:
+    - Tarefas pequenas (no máximo ~2 horas cada) e verificáveis
+    - Incluir tarefa de verificação no navegador quando houver mudança visível
+
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

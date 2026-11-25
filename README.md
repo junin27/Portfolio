@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfólio: "Índice"
 
-## Getting Started
+Portfólio elegante (claro, serifado, azul bebê) com animações em **GSAP** e referências nerds espalhadas pelos detalhes. Feito em **Next.js 16 + React 19 + TypeScript + Tailwind 4**.
 
-First, run the development server:
+## Rodar
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # confere se tudo compila antes de publicar
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Onde editar o conteúdo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Nada de banco de dados: todo o conteúdo fica em `src/content/`, com tipos que avisam se faltar algum campo.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Arquivo | O que tem |
+|---|---|
+| `perfil.ts` | nome, e-mail, links, palavras do hero, manifesto, stack |
+| `projetos.ts` | projetos (cada um vira `/projetos/<slug>`) |
+| `pesquisa.ts` | TCC, artigo, IC, livro |
+| `eventos.ts` | eventos e experiência profissional |
 
-## Learn More
+## Mapa dos efeitos
 
-To learn more about Next.js, take a look at the following resources:
+| Efeito | Arquivo |
+|---|---|
+| Título que sobe por linhas + palavra em itálico que troca com desfoque | `components/home/Hero.tsx` |
+| Aura azul bebê respirando + grade milimetrada | `components/home/Hero.tsx`, `globals.css` |
+| `$ whoami` digitando + selos "build passing" | `components/home/Hero.tsx` |
+| Faixa de `import` da stack | `components/home/Marquee.tsx` |
+| Índice com filtros `ls ./pesquisa` e cartão que segue o mouse | `components/home/Indice.tsx` |
+| Celular passando as telas do app | `components/devices/Phone.tsx` |
+| Monitor rolando o site | `components/devices/Monitor.tsx` |
+| Leitor de PDF que folheia as páginas | `components/devices/PdfReader.tsx` |
+| Eventos como `git log --graph` | `components/home/Eventos.tsx` |
+| Manifesto que acende com a rolagem + stack em `package.json` | `components/home/Sobre.tsx` |
+| Links do menu que "decodificam" | `components/fx/ScrambleText.tsx` |
+| Código Konami + mensagem no console | `components/fx/EasterEggs.tsx` |
+| Página 404 com `git blame` | `app/not-found.tsx` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para usar imagens reais: coloque os arquivos em `public/` e preencha `telas` (app), `captura` (site) ou `pdf` (pesquisa) no conteúdo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Todos os efeitos respeitam `prefers-reduced-motion`.
 
-## Deploy on Vercel
+## Publicar na Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Crie um repositório no GitHub e envie este projeto (`git push`).
+2. Em vercel.com → **Add New → Project**, importe o repositório. A Vercel detecta o Next.js sozinha, sem nenhuma configuração.
+3. Cada `git push` na branch principal publica de novo; cada pull request ganha uma URL de preview.
