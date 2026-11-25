@@ -40,12 +40,12 @@
 - [x] 7.1 Adicionar as ferramentas ativas desde a change 0 (dependency-cruiser, knip, gitleaks, Playwright com Firefox e WebKit) e ligar cada uma a um script `pnpm`; verificar com [DONO] `pnpm install` e cada script rodando isolado
 - [x] 7.2 Escrever primeiro os testes de `scripts/portao/` (matriz tipada, verificação não aplicável com motivo, reprovação por limite, relatório reprovado sem checklist manual) usando `FakeExecutorDeProcessos`, e depois a implementação de `matriz.ts`, `executor.ts`, `relatorio.ts` e `cli.ts`; verificar com `pnpm test` verde
 - [x] 7.3 Escrever primeiro os testes de `scripts/hooks/bloquear-archive.mjs` (bloqueia com item reprovado, com checklist desmarcado e com relatório mais velho que o último commit; libera com tudo verde) e depois o script; registrar o hook `PreToolUse` no `.claude/settings.json`; verificar tentando arquivar a change com relatório reprovado e vendo o bloqueio
-- [ ] 7.4 Configurar o Mantis com estado em `../.mantis-estado/` e rodar a campanha completa inicial sobre o projeto; verificar que `THREAT_MODEL.md` e o relatório foram gerados e que o `pnpm portao` reconhece o relatório
+- [x] 7.4 Configurar o Mantis com estado em `../.mantis-estado/` e rodar a campanha completa inicial sobre o projeto; verificar que `THREAT_MODEL.md` e o relatório foram gerados e que o `pnpm portao` reconhece o relatório
 - [ ] 7.5 Adicionar ao `.github/workflows/ci.yml` as mesmas verificações do portão (incluindo CodeQL e Playwright nos 3 navegadores); verificação junto com a 6.2, quando o repositório existir
 - [x] 7.5a [DONO] Instalar o SkillSpector (feito via imagem Docker da tag v2.13.4, porque o `uv` falhou no Windows; ADR-0016) e escanear Mantis, OpenSpec e o ponytail antes de instalá-lo, triando os achados; verificar com o resumo em `docs/qualidade/skills/` e nenhum achado alto ou crítico sem triagem com prova
 - [ ] 7.5b [DONO] Instalar o ponytail (só depois da 7.5a liberar) com `webhookUrl` vazio e registro local desligado, e recusar a sugestão de statusline (ADR-0010); verificar com `/ponytail lite` ativo e nenhum arquivo novo em `~/.config/ponytail/band/`
-- [ ] 7.5c Incluir o `/ponytail-review` no `pnpm portao` como bloco 4 (o script confere se a revisão da change existe, é mais nova que o último commit e não tem "Must fix"/"Should fix" pendente) com testes do critério; verificar com `pnpm test` verde
-- [ ] 7.6 Atualizar o `CLAUDE.md` do projeto e o `openspec/config.yaml` para exigir o portão em toda change; verificar por revisão do dono
+- [x] 7.5c Incluir o `/ponytail-review` no `pnpm portao` como bloco 4 (o script confere se a revisão da change existe, é mais nova que o último commit e não tem "Must fix"/"Should fix" pendente) com testes do critério; verificar com `pnpm test` verde
+- [x] 7.6 Atualizar o `CLAUDE.md` do projeto e o `openspec/config.yaml` para exigir o portão em toda change; verificar por revisão do dono
 
 ## 8. Portão desta change
 

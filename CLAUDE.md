@@ -7,7 +7,7 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - Exceção autorizada pelo dono (2026-11-21): o hook `PostToolUse` roda `vitest related` no arquivo editado sem pedir permissão. Testes rodados à mão continuam pedindo.
 - Autorização permanente do dono (2026-11-22), sem pedir nem confirmar a cada execução: testes (`pnpm test*`, `pnpm check`), `pnpm portao`, scripts de desenvolvimento do `package.json` (lint, typecheck, format, build, dev), CLI do OpenSpec, etapas do Mantis, comandos do ponytail e as ferramentas do portão (Playwright, Lighthouse, gitleaks, knip, dependency-cruiser, Stryker, ZAP).
 - Pedir autorização antes, a cada vez (comandos irreversíveis ou que saem da máquina): instalar/remover dependências, `git commit`, `git push`, migrações em banco real, deploy.
-- `git restore`, `reset`, `checkout`, `clean` e `revert` estão em `deny` (2026-11-23): só o dono roda, à mão. Motivo: no modo de permissão `auto` as regras `ask` não pediram confirmação.
+- `git restore`, `reset`, `checkout`, `clean`, `revert`, `stash drop/clear`, `branch -D`, `worktree remove`, `git -C` e `rm -r` estão em `deny` (2026-11-23): só o dono roda, à mão. Motivo: no modo de permissão `auto` as regras `ask` não pediram confirmação. Para ler outro checkout, usar `cd`, não `git -C`.
 - Todo o resto roda sem pedir.
 - Gerenciador: pnpm (Corepack). Verificação única: `pnpm check` (lint + tipos + unitários). Integração: `pnpm test:integracao` (Docker). E2E: `pnpm test:e2e`.
 
@@ -15,7 +15,8 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - Spec primeiro: uma change OpenSpec por vez (`openspec/changes/`). Só implementar depois da aprovação do dono.
 - Roteiro em `docs/roadmap.md`. Decisões em `docs/adr/`. Uma decisão nova vira um ADR novo.
 - Cada change termina com o Definition of Done do `../CLAUDE.md` e com o portão verde (ADR-0008, `docs/estrategia-de-testes.md`).
-- Portão: matriz de testes + `openspec validate --strict` + Mantis. Todo problema: triagem com evidência → falso positivo registrado em `docs/qualidade/falsos-positivos.md`, ou confirmado → teste de regressão → correção mínima → portão inteiro de novo. Repetir até zerar.
+- **Toda change exige o portão:** `pnpm portao --change <nome> --numero <n>` com `verificacao.md` APROVADO, gerado depois do último commit, antes do archive. Revisões externas em `openspec/changes/<nome>/revisoes/<id>.md` com "Commit revisado: <hash>" e "Pendentes: <n>" (ou "Não aplicável: <motivo>"). O hook bloqueia o archive pelo CLI e por `mv`/`Move-Item` para `openspec/changes/archive/`.
+- Portão: matriz de testes + `openspec validate --strict` + Mantis + SkillSpector (`.claude/`) + ponytail (não aplicável até a 7.5b). Todo problema: triagem com evidência → falso positivo registrado em `docs/qualidade/falsos-positivos.md`, ou confirmado → teste de regressão → correção mínima → portão inteiro de novo. Repetir até zerar.
 - Parar e chamar o dono: mesma falha 3 vezes, correção que muda escopo/spec/arquitetura, arquivo fora da change, dúvida sobre falso positivo.
 - Nunca baixar limite, pular, enfraquecer ou apagar teste para passar. Teste instável é falha.
 - Ponytail (ADR-0010): modo `lite`; `/ponytail-review` é o bloco 4 do portão. Em conflito vale este arquivo e o `../CLAUDE.md` (TDD completo; sem comentários `shortcut:`, usar `TODO(issue #N)`). Não usar `ultra`. Não sugerir a statusline dele.
@@ -54,5 +55,8 @@ Regras gerais: `../CLAUDE.md` (XP, execução controlada, TDD). Este arquivo só
 - Hooks e permissões de `.claude/settings.json` só carregam em sessão aberta **dentro de `portfolio-v2/`**, não na pasta `Portfólio/`.
 - Sessão em worktree do app desktop: settings, hooks e `CLAUDE_PROJECT_DIR` vêm do checkout **principal**. Os hooks acham o worktree pelo git (`raizDoCheckoutDe`), mas mudança em `settings.json` ou em `scripts/hooks/` só vale depois de chegar ao `master` do checkout principal.
 - Worktree novo não tem `node_modules`: rodar `pnpm install --frozen-lockfile` nele antes de qualquer teste.
+- gitleaks no worktree lia 0 commits e saía com 0: `pnpm segredos` monta o `.git` comum e reprova varredura de 0 commits.
+- O hook de archive lê o texto do comando: qualquer comando Bash que contenha a frase do archive do CLI (até um `echo` ou heredoc) é barrado sem portão verde. Usar Write/Grep para textos que citam o comando.
+- Mantis: rodar com `--target_root` numa cópia (`git archive HEAD`) em `../.mantis-estado/alvo-<hash>`, senão o `mantis-summarize` grava `mantis-summary.md` em cada pasta do repositório.
 - Para testar hook à mão no Git Bash, mandar caminhos no formato Windows (`cygpath -w`); `$PWD` gera `/c/...`, que o Node não resolve.
 - `vitest related` no projeto `unit` roda a suíte unitária inteira, não só o teste ligado ao arquivo (rápido hoje; rever se a suíte crescer).

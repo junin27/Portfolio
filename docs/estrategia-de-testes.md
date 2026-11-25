@@ -129,4 +129,6 @@ Regras do ciclo:
 - O checklist manual.
 - A data e o commit da execução.
 
-O hook do Claude Code bloqueia `openspec archive` se esse relatório não estiver 100% verde e com o checklist manual marcado.
+O hook do Claude Code bloqueia o archive (pelo CLI ou movendo a pasta para `openspec/changes/archive/`) se esse relatório não estiver 100% verde e com o checklist manual marcado. Itens manuais ativos que faltarem no `checklist-manual.md` entram como desmarcados.
+
+Revisões externas (`revisoes/<id>.md`): linhas "Commit revisado: <hash>" e "Pendentes: <n>", ou "Não aplicável: <motivo>" quando a ferramenta não se aplica (ex.: ponytail ainda não instalado).

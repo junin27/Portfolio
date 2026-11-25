@@ -14,6 +14,7 @@ context: |
 
 rules:
   proposal:
+    - Toda change passa pelo portão de qualidade (ADR-0008): pnpm portao --change <nome> --numero <n> com verificacao.md APROVADO antes do archive
     - Sempre declarar o que está fora de escopo
     - Listar as decisões que dependem do dono do portfólio
   design:
@@ -30,4 +31,5 @@ operations:
   archive:
     guidance:
       - Só arquivar com verificacao.md 100% verde, gerado depois do último commit, e checklist manual marcado pelo dono
+      - O archive (CLI ou mv para openspec/changes/archive/) é bloqueado por hook sem portão APROVADO; não contornar
       - Nunca baixar limite, pular ou enfraquecer teste para o portão passar
