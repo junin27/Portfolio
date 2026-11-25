@@ -1,6 +1,7 @@
 import { lerRevisaoExterna } from "./leitura-de-relatorios";
+import { CHECKLIST_MANUAL } from "./matriz";
 import type { ConsultaGit, ExecutorDeProcessos, LeitorDeArquivos } from "./portas";
-import type { ResultadoDaVerificacao, ResultadoDoPortao, Verificacao } from "./tipos";
+import type { ItemDoChecklist, ResultadoDaVerificacao, ResultadoDoPortao, Verificacao } from "./tipos";
 
 export interface ContextoDaAvaliacao {
   readonly numeroDaChange: number;
@@ -11,6 +12,7 @@ export interface ContextoDaAvaliacao {
 }
 
 const LINHAS_DE_SAIDA_NO_DETALHE = 5;
+const LINHA_DE_NAO_APLICAVEL = /^\s*Não aplicável:\s*(?<motivo>\S.*?)\s*$/m;
 
 function resultado(
   verificacao: Verificacao,
@@ -61,6 +63,11 @@ function avaliarRevisaoExterna(
   if (conteudo === null) {
     return resultado(verificacao, "reprovado", `relatório não encontrado: ${caminho}`);
   }
+  // Ex.: ferramenta ainda não instalada. O motivo aparece no relatório; nunca se omite a verificação.
+  const naoAplicavel = LINHA_DE_NAO_APLICAVEL.exec(conteudo)?.groups?.motivo;
+  if (naoAplicavel !== undefined) {
+    return resultado(verificacao, "nao-aplicavel", naoAplicavel);
+  }
   const revisao = lerRevisaoExterna(conteudo);
   const mudancas = mudancasForaDaChange(revisao.commitRevisado, contexto);
   if (mudancas.length > 0) {
@@ -100,6 +107,24 @@ export function avaliarVerificacao(
     return avaliarRevisaoExterna(verificacao, contexto);
   }
   return avaliarAutomatica(verificacao, contexto);
+}
+
+/**
+ * Junta ao checklist lido do arquivo os itens manuais ativos nesta change que faltam, desmarcados,
+ * para que um checklist-manual.md ausente ou incompleto reprove o portão em vez de passar calado.
+ *
+ * @example
+ * completarChecklistManual([], 3); // os três itens da change 3, todos desmarcados
+ */
+export function completarChecklistManual(
+  lidos: readonly ItemDoChecklist[],
+  numeroDaChange: number,
+): ItemDoChecklist[] {
+  const faltando = CHECKLIST_MANUAL.filter(
+    (item) =>
+      item.ativaDesdeAChange <= numeroDaChange && !lidos.some((lido) => lido.descricao === item.descricao),
+  ).map((item) => ({ descricao: item.descricao, marcado: false }));
+  return [...lidos, ...faltando];
 }
 
 /** O portão só passa com tudo aprovado (ou não aplicável) e o checklist manual inteiro marcado. */

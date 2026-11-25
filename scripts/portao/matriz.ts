@@ -31,6 +31,7 @@ const CHANGE = {
   DOMINIO_E_PORTAS: 1,
   DESIGN_SYSTEM: 2,
   HOME_PUBLICA: 3,
+  PAINEL: 6,
   PERSISTENCIA: 7,
   LOGIN: 8,
   DRIVE: 9,
@@ -40,6 +41,15 @@ const CHANGE = {
 const ZERO_ERROS = "zero erros";
 const TODOS_PASSANDO = "100% passando";
 const ZERO_PENDENTES = "zero achados confirmados pendentes";
+
+/** Checklist manual de docs/estrategia-de-testes.md: o dono marca no checklist-manual.md da change. */
+export const CHECKLIST_MANUAL: readonly { readonly descricao: string; readonly ativaDesdeAChange: number }[] =
+  [
+    { descricao: "Teste exploratório de 15 minutos", ativaDesdeAChange: CHANGE.HOME_PUBLICA },
+    { descricao: "Leitor de tela (NVDA) nas páginas novas", ativaDesdeAChange: CHANGE.HOME_PUBLICA },
+    { descricao: "Zoom de 200%", ativaDesdeAChange: CHANGE.HOME_PUBLICA },
+    { descricao: "Usabilidade do painel com uma pessoa de fora", ativaDesdeAChange: CHANGE.PAINEL },
+  ];
 
 export const MATRIZ_DE_VERIFICACOES: readonly Verificacao[] = [
   automatica("lint", "Lint", ZERO_ERROS, CHANGE.HARNESS, ["pnpm", "lint"]),

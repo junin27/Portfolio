@@ -1,5 +1,5 @@
 import { FakeConsultaGit, FakeExecutorDeProcessos, FakeLeitorDeArquivos } from "@tests/fakes/portao";
-import { avaliarVerificacao, portaoAprovado } from "./avaliacao";
+import { avaliarVerificacao, completarChecklistManual, portaoAprovado } from "./avaliacao";
 import type { ResultadoDoPortao, Verificacao } from "./tipos";
 
 const PASTA_DA_CHANGE = "openspec/changes/exemplo";
@@ -103,6 +103,20 @@ describe("avaliarVerificacao: revisões externas", () => {
     expect(resultado.situacao).toBe("aprovado");
   });
 
+  it("marca como não aplicável, com o motivo, a revisão declarada não aplicável no relatório", () => {
+    const leitor = new FakeLeitorDeArquivos().com(
+      `${PASTA_DA_CHANGE}/revisoes/mantis.md`,
+      "Não aplicável: ponytail ainda não instalado (tarefa 7.5b)",
+    );
+
+    const resultado = avaliarVerificacao(mantis, contexto({ leitor }));
+
+    expect(resultado).toMatchObject({
+      situacao: "nao-aplicavel",
+      detalhe: "ponytail ainda não instalado (tarefa 7.5b)",
+    });
+  });
+
   it("reprova quando o relatório não existe", () => {
     const resultado = avaliarVerificacao(mantis, contexto());
 
@@ -148,6 +162,23 @@ describe("avaliarVerificacao: revisões externas", () => {
       situacao: "reprovado",
       detalhe: "relatório desatualizado: mudou depois da revisão: src/app/page.tsx",
     });
+  });
+});
+
+// Regressão (Mantis, pass 1): sem checklist-manual.md o portão aprovava mesmo com itens manuais ativos.
+describe("completarChecklistManual", () => {
+  it("acrescenta desmarcados os itens manuais ativos que faltam no arquivo", () => {
+    const completo = completarChecklistManual([{ descricao: "Zoom de 200%", marcado: true }], 3);
+
+    expect(completo).toEqual([
+      { descricao: "Zoom de 200%", marcado: true },
+      { descricao: "Teste exploratório de 15 minutos", marcado: false },
+      { descricao: "Leitor de tela (NVDA) nas páginas novas", marcado: false },
+    ]);
+  });
+
+  it("não exige item manual antes da change em que ele passa a valer", () => {
+    expect(completarChecklistManual([], 0)).toEqual([]);
   });
 });
 

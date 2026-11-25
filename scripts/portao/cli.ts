@@ -3,7 +3,12 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { avaliarVerificacao, portaoAprovado, type ContextoDaAvaliacao } from "./avaliacao";
+import {
+  avaliarVerificacao,
+  completarChecklistManual,
+  portaoAprovado,
+  type ContextoDaAvaliacao,
+} from "./avaliacao";
 import { lerChecklistManual } from "./leitura-de-relatorios";
 import { MATRIZ_DE_VERIFICACOES } from "./matriz";
 import type { ConsultaGit, ExecutorDeProcessos, LeitorDeArquivos } from "./portas";
@@ -84,7 +89,10 @@ function executarPortao(): void {
     commit: gitReal.commitAtual(),
     geradoEm: new Date(),
     verificacoes,
-    checklistManual: lerChecklistManual(leitorReal.ler(`${pastaDaChange}/checklist-manual.md`) ?? ""),
+    checklistManual: completarChecklistManual(
+      lerChecklistManual(leitorReal.ler(`${pastaDaChange}/checklist-manual.md`) ?? ""),
+      numero,
+    ),
   };
   writeFileSync(`${pastaDaChange}/verificacao.md`, gerarRelatorio(resultado), "utf8");
   const aprovado = portaoAprovado(resultado);
