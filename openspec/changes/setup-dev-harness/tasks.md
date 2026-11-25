@@ -32,7 +32,7 @@
 ## 6. Setup e CI
 
 - [x] 6.1 Escrever `scripts/setup.ps1` e `scripts/setup.sh` idempotentes; verificar com [DONO] rodando duas vezes seguidas sem erro e sem duplicar o `.env`
-- [ ] 6.2 Escrever `.github/workflows/ci.yml` (pnpm com cache; jobs de qualidade, integração, e2e e build); verificação adiada até o dono criar o repositório no GitHub: [DONO] push e todos os jobs verdes
+- [x] 6.2 Escrever `.github/workflows/ci.yml` (pnpm com cache; jobs de qualidade, integração, e2e e build); verificação adiada até o dono criar o repositório no GitHub: [DONO] push e todos os jobs verdes
 - [x] 6.3 Atualizar o README (como rodar, como testar, estrutura) e escrever o ADR-0009 (harness, pnpm, hook de testes autorizado, versões fixadas); verificar seguindo o README num clone limpo
 
 ## 7. Portão de qualidade
@@ -41,7 +41,7 @@
 - [x] 7.2 Escrever primeiro os testes de `scripts/portao/` (matriz tipada, verificação não aplicável com motivo, reprovação por limite, relatório reprovado sem checklist manual) usando `FakeExecutorDeProcessos`, e depois a implementação de `matriz.ts`, `executor.ts`, `relatorio.ts` e `cli.ts`; verificar com `pnpm test` verde
 - [x] 7.3 Escrever primeiro os testes de `scripts/hooks/bloquear-archive.mjs` (bloqueia com item reprovado, com checklist desmarcado e com relatório mais velho que o último commit; libera com tudo verde) e depois o script; registrar o hook `PreToolUse` no `.claude/settings.json`; verificar tentando arquivar a change com relatório reprovado e vendo o bloqueio
 - [x] 7.4 Configurar o Mantis com estado em `../.mantis-estado/` e rodar a campanha completa inicial sobre o projeto; verificar que `THREAT_MODEL.md` e o relatório foram gerados e que o `pnpm portao` reconhece o relatório
-- [ ] 7.5 Adicionar ao `.github/workflows/ci.yml` as mesmas verificações do portão (incluindo CodeQL e Playwright nos 3 navegadores); verificação junto com a 6.2, quando o repositório existir
+- [x] 7.5 Adicionar ao `.github/workflows/ci.yml` as mesmas verificações do portão (incluindo CodeQL e Playwright nos 3 navegadores); verificação junto com a 6.2, quando o repositório existir
 - [x] 7.5a [DONO] Instalar o SkillSpector (feito via imagem Docker da tag v2.13.4, porque o `uv` falhou no Windows; ADR-0016) e escanear Mantis, OpenSpec e o ponytail antes de instalá-lo, triando os achados; verificar com o resumo em `docs/qualidade/skills/` e nenhum achado alto ou crítico sem triagem com prova
 - [ ] 7.5b [DONO] Instalar o ponytail (só depois da 7.5a liberar) com `webhookUrl` vazio e registro local desligado, e recusar a sugestão de statusline (ADR-0010); verificar com `/ponytail lite` ativo e nenhum arquivo novo em `~/.config/ponytail/band/`
 - [x] 7.5c Incluir o `/ponytail-review` no `pnpm portao` como bloco 4 (o script confere se a revisão da change existe, é mais nova que o último commit e não tem "Must fix"/"Should fix" pendente) com testes do critério; verificar com `pnpm test` verde
