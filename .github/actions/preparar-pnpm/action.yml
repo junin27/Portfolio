@@ -1,0 +1,37 @@
+# Prepara um job do CI: Node do .nvmrc, pnpm fixado pelo Corepack (packageManager do package.json),
+# cache do store do pnpm (chave = pnpm-lock.yaml) e instalação congelada. Usada por todos os jobs
+# para não repetir os mesmos passos (tarefa 6.2: "pnpm com cache").
+name: Preparar Node e pnpm
+description: Node do .nvmrc, pnpm via Corepack, cache do store do pnpm e pnpm install --frozen-lockfile
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+
+    - name: Ativar o pnpm fixado (Corepack)
+      shell: bash
+      run: corepack enable
+      env:
+        COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+
+    - name: Localizar o store do pnpm
+      id: store
+      shell: bash
+      run: echo "caminho=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      env:
+        COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+
+    - name: Cache do store do pnpm
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.store.outputs.caminho }}
+        key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: pnpm-store-${{ runner.os }}-
+
+    - name: Instalar dependências (lockfile congelado)
+      shell: bash
+      run: pnpm install --frozen-lockfile
+      env:
+        COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"

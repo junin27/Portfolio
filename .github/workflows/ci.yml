@@ -20,15 +20,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - name: Instalar dependências
-        run: |
-          corepack enable
-          pnpm install --frozen-lockfile
-        env:
-          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      - uses: ./.github/actions/preparar-pnpm
       - run: pnpm check
       - run: pnpm codigo-morto
       - run: pnpm specs
@@ -41,15 +33,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - name: Instalar dependências
-        run: |
-          corepack enable
-          pnpm install --frozen-lockfile
-        env:
-          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      - uses: ./.github/actions/preparar-pnpm
       - run: pnpm test:integracao
 
   e2e:
@@ -58,15 +42,14 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - name: Instalar dependências e navegadores
+      - uses: ./.github/actions/preparar-pnpm
+      # setup.sh é idempotente: com o store em cache a instalação é rápida; ele cuida dos navegadores e do .env
+      - name: Navegadores do Playwright e .env
         run: bash scripts/setup.sh
         env:
           COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       - run: pnpm test:e2e:todos
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: relatorio-playwright
@@ -81,15 +64,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-      - name: Instalar dependências
-        run: |
-          corepack enable
-          pnpm install --frozen-lockfile
-        env:
-          COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      - uses: ./.github/actions/preparar-pnpm
       # Mesma varredura do portão local (gitleaks em imagem com versão fixa, histórico inteiro, só leitura;
       # reprova varredura de 0 commits). Substitui a gitleaks-action, que falhava no primeiro push
       # (o commit raiz não tem pai) e recebia o GITHUB_TOKEN sem precisar.
